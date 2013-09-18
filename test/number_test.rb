@@ -28,6 +28,16 @@ module GlobalPhone
       assert_equal db.region(44), number.region
     end
 
+    test "international_area_code" do
+      number = context.parse("+79157484208")
+      assert_equal '915', number.international_area_code
+    end
+
+    test "international_local_number" do
+      number = context.parse("+79157484208")
+      assert_equal '7484208', number.international_local_number
+    end
+
     test "territory" do
       number = context.parse("(312) 555-1212")
       assert_equal db.territory(:us), number.territory

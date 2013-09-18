@@ -28,6 +28,12 @@ module GlobalPhone
       number.international_string if number
     end
 
+    def valid_international_number?(string, territory_name = default_territory_name)
+      string = Number.normalize(string)
+      number = parse(string, territory_name)
+      !!(number && number.valid? && string == number.international_string)
+    end
+
     def validate(string, territory_name = default_territory_name)
       number = parse(string, territory_name)
       number && number.valid?
