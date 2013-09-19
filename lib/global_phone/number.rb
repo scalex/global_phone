@@ -1,5 +1,4 @@
 require 'forwardable'
-require 'ostruct'
 
 module GlobalPhone
   class Number
@@ -79,7 +78,11 @@ module GlobalPhone
         @parts_of_number ||= begin
           parts = international_format.split(/ +/, 3).map { |e| Number.normalize(e) }
           country_code, area_code, local_number = parts
-          OpenStruct.new(area_code: area_code, local_number: local_number)
+
+          Struct.new(:area_code, :local_number).new.tap do |s|
+            s.area_code = area_code
+            s.local_number = local_number
+          end
         end
       end
 
