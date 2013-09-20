@@ -39,6 +39,14 @@ module GlobalPhone
       end
     end
 
+    def international_area_code
+      international_parts_of_number.area_code
+    end
+
+    def international_local_number
+      international_parts_of_number.local_number
+    end
+
     def international_string
       @international_string ||= international_format.gsub(NON_DIALABLE_CHARS, "")
     end
@@ -66,6 +74,18 @@ module GlobalPhone
     end
 
     protected
+      def international_parts_of_number
+        @parts_of_number ||= begin
+          parts = international_format.split(/ +/, 3).map { |e| Number.normalize(e) }
+          country_code, area_code, local_number = parts
+
+          Struct.new(:area_code, :local_number).new.tap do |s|
+            s.area_code = area_code
+            s.local_number = local_number
+          end
+        end
+      end
+
       def format
         @format ||= find_format_for(national_string)
       end

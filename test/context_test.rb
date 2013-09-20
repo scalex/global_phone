@@ -36,6 +36,12 @@ module GlobalPhone
         :country_code => "44", :national_string => "2070313000"
     end
 
+    test "valid_international_number?" do
+      assert context.validate("+1-312-555-1212")
+      assert context.validate("+442070313000")
+      assert !context.validate("+12345")
+    end
+
     test "validating an international number" do
       assert context.validate("+1-312-555-1212")
       assert context.validate("+442070313000")
